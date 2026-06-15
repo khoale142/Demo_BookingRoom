@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Karaoke Room</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <h1>Book a Karaoke Room</h1>
+
+  <div class="form-card">
+    <% if (error) { %>
+      <div class="error-message"><%= error %></div>
+    <% } %>
+
+    <form action="/book-room" method="POST">
+      <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input 
+          type="text" 
+          id="customerName" 
+          name="customerName" 
+          placeholder="Enter your name"
+          value="<%= formData.customerName || '' %>"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="roomNumber">Room Number</label>
+
+        <!-- Cách 1: nhập tay giống hình đề -->
+        <input 
+          type="text" 
+          id="roomNumber" 
+          name="roomNumber" 
+          placeholder="Enter room number"
+          value="<%= formData.roomNumber || '' %>"
+          required
+        />
+
+        <!-- 
+        Cách 2: muốn chắc chắn chỉ chọn phòng có sẵn thì dùng select này thay input bên trên
+
+        <select id="roomNumber" name="roomNumber" required>
+          <option value="">Select room number</option>
+          <% rooms.forEach((room) => { %>
+            <option 
+              value="<%= room.roomNumber %>"
+              <%= formData.roomNumber === room.roomNumber ? 'selected' : '' %>
+            >
+              Room <%= room.roomNumber %> - <%= room.pricePerHour %> VND/hour
+            </option>
+          <% }) %>
+        </select>
+        -->
+      </div>
+
+      <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <input 
+          type="datetime-local" 
+          id="startTime" 
+          name="startTime"
+          value="<%= formData.startTime || '' %>"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">End Time</label>
+        <input 
+          type="datetime-local" 
+          id="endTime" 
+          name="endTime"
+          value="<%= formData.endTime || '' %>"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-blue btn-full">
+        Book Room
+      </button>
+
+      <a href="/bookings" class="btn btn-orange btn-full">
+        Go Back
+      </a>
+    </form>
+  </div>
+</body>
+</html>

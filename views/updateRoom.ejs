@@ -1,0 +1,102 @@
+<%
+  const formatDateForInput = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update Booking</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <h1>Update Booking</h1>
+
+  <div class="form-card">
+    <% if (error) { %>
+      <div class="error-message"><%= error %></div>
+    <% } %>
+
+    <form action="/update-booking/<%= booking._id %>" method="POST">
+      <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input 
+          type="text" 
+          id="customerName" 
+          name="customerName" 
+          value="<%= booking.customerName %>"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="roomNumber">Room Number</label>
+
+        <!-- Cách 1: nhập tay giống hình đề -->
+        <input 
+          type="text" 
+          id="roomNumber" 
+          name="roomNumber" 
+          value="<%= booking.roomNumber %>"
+          required
+        />
+
+        <!-- 
+        Cách 2: muốn chọn phòng có sẵn thì dùng select này thay input bên trên
+
+        <select id="roomNumber" name="roomNumber" required>
+          <% rooms.forEach((room) => { %>
+            <option 
+              value="<%= room.roomNumber %>"
+              <%= booking.roomNumber === room.roomNumber ? 'selected' : '' %>
+            >
+              Room <%= room.roomNumber %> - <%= room.pricePerHour %> VND/hour
+            </option>
+          <% }) %>
+        </select>
+        -->
+      </div>
+
+      <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <input 
+          type="datetime-local" 
+          id="startTime" 
+          name="startTime"
+          value="<%= formatDateForInput(booking.startTime) %>"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">End Time</label>
+        <input 
+          type="datetime-local" 
+          id="endTime" 
+          name="endTime"
+          value="<%= formatDateForInput(booking.endTime) %>"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-blue btn-full">
+        Update Booking
+      </button>
+
+      <a href="/bookings" class="btn btn-orange btn-full">
+        Go Back
+      </a>
+    </form>
+  </div>
+</body>
+</html>
